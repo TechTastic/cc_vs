@@ -59,21 +59,19 @@ open class ShipAPI(val environment: IAPIEnvironment, val ship: ServerShip) : ILu
 
     @LuaFunction
     fun getRoll(): Double {
-        val q = this.ship.transform.shipToWorldRotation
-        return atan2(2.0 * (q.x() * q.y() + q.w() * q.z()), q.w() * q.w() + q.x() * q.x() - q.y() * q.y() - q.z() * q.z())
+        val rotMatrix = this.getRotationMatrix()
+        return atan2(rotMatrix[2][1], rotMatrix[2][2])
     }
 
     @LuaFunction
     fun getYaw(): Double {
-        val q = this.ship.transform.shipToWorldRotation
-        return asin(-2.0 * (q.x() * q.z() - q.w() * q.y()))
+        val rotMatrix = this.getRotationMatrix()
+        return atan2(-rotMatrix[1][3], rotMatrix[3][3])
     }
 
     @LuaFunction
-    fun getPitch(): Double {
-        val q = this.ship.transform.shipToWorldRotation
-        return atan2(2.0 * (q.y() * q.z() + q.w() * q.x()), q.w() * q.w() - q.x() * q.x() - q.y() * q.y() + q.z() * q.z())
-    }
+    fun getPitch(): Double =
+            -asin(this.getRotationMatrix()[2][3])
 
     @LuaFunction
     fun getScale(): Map<String, Double> = vectorToTable(this.ship.transform.shipToWorldScaling)
