@@ -1,5 +1,7 @@
 package io.github.techtastic.cc_vs.forge
 
+import dan200.computercraft.shared.computer.core.ServerContext
+import dev.architectury.event.events.common.LifecycleEvent
 import io.github.techtastic.cc_vs.CCVSMod
 import io.github.techtastic.cc_vs.CCVSMod.init
 import io.github.techtastic.cc_vs.CCVSMod.initClient
@@ -20,6 +22,10 @@ class CCVSModForge {
             )
         }
 
+        LifecycleEvent.SERVER_STARTED.register {
+            context = ServerContext.get(it)
+        }
+
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CCVSConfig.SPEC, "${CCVSMod.MOD_ID}-config.toml")
 
         init()
@@ -30,6 +36,8 @@ class CCVSModForge {
     }
 
     companion object {
+        lateinit var context: ServerContext
+
         fun getModBus(): IEventBus = MOD_BUS
     }
 }
