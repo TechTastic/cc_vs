@@ -1,6 +1,5 @@
 package io.github.techtastic.cc_vs.fabric;
 
-import fuzs.forgeconfigapiport.impl.ForgeConfigAPIPort;
 import fuzs.forgeconfigapiport.impl.config.ForgeConfigRegistryImpl;
 import io.github.techtastic.cc_vs.CCVSMod;
 import io.github.techtastic.cc_vs.fabric.config.CCVSConfig;

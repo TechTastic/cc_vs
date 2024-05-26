@@ -10,4 +10,8 @@ public class PlatformUtilsImpl {
     public static boolean isCommandOnly() {
         return CCVSConfig.COMMAND_ONLY.get();
     }
+
+    public static boolean exposePhysTick() {
+        return CCVSConfig.EXPOSE_PHYS_TICK.get();
+    }
 }

@@ -5,6 +5,7 @@ import dan200.computercraft.api.lua.LuaException
 import dan200.computercraft.api.lua.LuaFunction
 import dan200.computercraft.core.apis.IAPIEnvironment
 import io.github.techtastic.cc_vs.PlatformUtils
+import io.github.techtastic.cc_vs.ship.PhysTickEventHandler
 import io.github.techtastic.cc_vs.ship.QueuedForcesApplier
 import net.minecraft.server.level.ServerLevel
 import org.joml.Quaterniond
@@ -16,8 +17,13 @@ import org.valkyrienskies.core.impl.game.ShipTeleportDataImpl
 import org.valkyrienskies.mod.common.shipObjectWorld
 import org.valkyrienskies.mod.common.vsCore
 
-class ExtendedShipAPI(environment: IAPIEnvironment, ship: ServerShip, val level: ServerLevel) : ShipAPI(environment, ship) {
+class ExtendedShipAPI(private val api: IAPIEnvironment, ship: ServerShip, private val level: ServerLevel) : ShipAPI(ship) {
     var control: QueuedForcesApplier = QueuedForcesApplier.getOrCreateControl(this.ship)
+
+    init {
+        if (PlatformUtils.exposePhysTick())
+            PhysTickEventHandler.getOrCreateControl(this.ship).addComputer(api.computerID)
+    }
 
     @LuaFunction
     fun applyInvariantForce(xForce: Double, yForce: Double, zForce: Double) {
@@ -65,11 +71,11 @@ class ExtendedShipAPI(environment: IAPIEnvironment, ship: ServerShip, val level:
             throw LuaException("Teleporting is Disabled via CC: VS Config!")
 
         val input = args.getTable(0)
-        
+
         var pos = this.ship.transform.positionInWorld
         if (input.containsKey("pos"))
             pos = getVectorFromTable(input, "pos")
-        
+
         var rot = this.ship.transform.shipToWorldRotation
         if (input.containsKey("rot"))
             rot = getQuaternionFromTable(input).normalize(Quaterniond())
@@ -101,24 +107,24 @@ class ExtendedShipAPI(environment: IAPIEnvironment, ship: ServerShip, val level:
     private fun getVectorFromTable(input: Map<*, *>, section: String): Vector3dc {
         val table = (input[section] ?: throwMalformedSectionError(section)) as Map<*, *>
         return Vector3d(
-                (table["x"] ?: throwMalformedFieldError(section, "x")) as Double,
-                (table["y"] ?: throwMalformedFieldError(section, "y")) as Double,
-                (table["z"] ?: throwMalformedFieldError(section, "z")) as Double
+            (table["x"] ?: throwMalformedFieldError(section, "x")) as Double,
+            (table["y"] ?: throwMalformedFieldError(section, "y")) as Double,
+            (table["z"] ?: throwMalformedFieldError(section, "z")) as Double
         )
     }
 
     private fun getQuaternionFromTable(input: Map<*, *>): Quaterniondc {
         val table = (input["rot"] ?: throwMalformedSectionError("rot")) as Map<*, *>
         return Quaterniond(
-                (table["x"] ?: throwMalformedFieldError("rot", "x")) as Double,
-                (table["y"] ?: throwMalformedFieldError("rot", "y")) as Double,
-                (table["z"] ?: throwMalformedFieldError("rot", "z")) as Double,
-                (table["w"] ?: throwMalformedFieldError("rot", "w")) as Double
+            (table["x"] ?: throwMalformedFieldError("rot", "x")) as Double,
+            (table["y"] ?: throwMalformedFieldError("rot", "y")) as Double,
+            (table["z"] ?: throwMalformedFieldError("rot", "z")) as Double,
+            (table["w"] ?: throwMalformedFieldError("rot", "w")) as Double
         )
     }
 
     private fun throwMalformedSectionError(section: String): Nothing =
-            throw LuaException("Malformed $section")
+        throw LuaException("Malformed $section")
     private fun throwMalformedFieldError(section: String, field: String): Nothing =
-            throw LuaException("Malformed $field key of $section")
+        throw LuaException("Malformed $field key of $section")
 }

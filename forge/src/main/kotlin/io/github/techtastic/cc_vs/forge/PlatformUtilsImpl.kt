@@ -8,4 +8,7 @@ object PlatformUtilsImpl {
 
     @JvmStatic
     fun isCommandOnly(): Boolean = CCVSConfig.COMMAND_ONLY.get()
+
+    @JvmStatic
+    fun exposePhysTick(): Boolean = CCVSConfig.EXPOSE_PHYS_TICK.get()
 }

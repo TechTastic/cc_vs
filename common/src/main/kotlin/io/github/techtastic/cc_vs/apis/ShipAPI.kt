@@ -2,7 +2,6 @@ package io.github.techtastic.cc_vs.apis
 
 import dan200.computercraft.api.lua.ILuaAPI
 import dan200.computercraft.api.lua.LuaFunction
-import dan200.computercraft.core.apis.IAPIEnvironment
 import org.joml.Vector3d
 import org.joml.Vector3dc
 import org.joml.Vector4d
@@ -11,7 +10,7 @@ import org.valkyrienskies.core.api.ships.ServerShip
 import kotlin.math.asin
 import kotlin.math.atan2
 
-open class ShipAPI(val environment: IAPIEnvironment, val ship: ServerShip) : ILuaAPI {
+open class ShipAPI(val ship: ServerShip) : ILuaAPI {
     var names: ArrayList<String> = arrayListOf("ship", this.ship.slug ?: "ship")
 
     override fun getNames(): Array<String> = names.toTypedArray()
