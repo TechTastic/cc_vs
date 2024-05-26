@@ -2,16 +2,16 @@ package io.github.techtastic.cc_vs.apis
 
 import dan200.computercraft.api.lua.ILuaAPI
 import dan200.computercraft.api.lua.LuaFunction
-import dan200.computercraft.core.apis.IAPIEnvironment
-import org.joml.Vector3d
-import org.joml.Vector3dc
+import io.github.techtastic.cc_vs.util.CCVSUtils.momentToTable
+import io.github.techtastic.cc_vs.util.CCVSUtils.quatToTable
+import io.github.techtastic.cc_vs.util.CCVSUtils.vectorToTable
 import org.joml.Vector4d
 import org.joml.primitives.AABBi
 import org.valkyrienskies.core.api.ships.ServerShip
 import kotlin.math.asin
 import kotlin.math.atan2
 
-open class ShipAPI(val environment: IAPIEnvironment, val ship: ServerShip) : ILuaAPI {
+open class ShipAPI(val ship: ServerShip) : ILuaAPI {
     var names: ArrayList<String> = arrayListOf("ship", this.ship.slug ?: "ship")
 
     override fun getNames(): Array<String> = names.toTypedArray()
@@ -29,16 +29,7 @@ open class ShipAPI(val environment: IAPIEnvironment, val ship: ServerShip) : ILu
     fun getMass(): Double = this.ship.inertiaData.mass
 
     @LuaFunction
-    fun getMomentOfInertiaTensor(): List<List<Double>> {
-        val tensor: MutableList<List<Double>> = mutableListOf()
-
-        for (i in 0..2) {
-            val row = this.ship.inertiaData.momentOfInertiaTensor.getRow(i, Vector3d())
-            tensor.add(i, listOf(row.x, row.y, row.z))
-        }
-
-        return tensor
-    }
+    fun getMomentOfInertiaTensor(): List<List<Double>> = momentToTable(this.ship.inertiaData.momentOfInertiaTensor)
 
     @LuaFunction
     fun getName(): String = this.ship.slug ?: "no-name"
@@ -47,15 +38,7 @@ open class ShipAPI(val environment: IAPIEnvironment, val ship: ServerShip) : ILu
     fun getOmega(): Map<String, Double> = vectorToTable(this.ship.omega)
 
     @LuaFunction
-    fun getQuaternion(): Map<String, Double> {
-        val q = this.ship.transform.shipToWorldRotation
-        return mapOf(
-                Pair("x", q.x()),
-                Pair("y", q.y()),
-                Pair("z", q.z()),
-                Pair("w", q.w())
-        )
-    }
+    fun getQuaternion(): Map<String, Double> = quatToTable(this.ship.transform.shipToWorldRotation)
 
     @LuaFunction
     fun getRoll(): Double {
@@ -115,10 +98,4 @@ open class ShipAPI(val environment: IAPIEnvironment, val ship: ServerShip) : ILu
 
         return matrix.toList()
     }
-
-    private fun vectorToTable(vec: Vector3dc): Map<String, Double> = mapOf(
-            Pair("x", vec.x()),
-            Pair("y", vec.y()),
-            Pair("z", vec.z())
-    )
 }

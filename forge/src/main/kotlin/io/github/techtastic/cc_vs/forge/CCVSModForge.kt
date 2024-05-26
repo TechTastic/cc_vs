@@ -1,14 +1,11 @@
 package io.github.techtastic.cc_vs.forge
 
+import dan200.computercraft.shared.computer.core.ServerContext
+import dev.architectury.event.events.common.LifecycleEvent
 import io.github.techtastic.cc_vs.CCVSMod
 import io.github.techtastic.cc_vs.CCVSMod.init
 import io.github.techtastic.cc_vs.CCVSMod.initClient
 import io.github.techtastic.cc_vs.forge.config.CCVSConfig
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider
-import net.minecraft.resources.ResourceLocation
-import net.minecraftforge.client.event.EntityRenderersEvent.RegisterRenderers
-import net.minecraftforge.client.event.ModelRegistryEvent
-import net.minecraftforge.client.model.ForgeModelBakery
 import net.minecraftforge.eventbus.api.IEventBus
 import net.minecraftforge.fml.ModLoadingContext
 import net.minecraftforge.fml.common.Mod
@@ -25,6 +22,10 @@ class CCVSModForge {
             )
         }
 
+        LifecycleEvent.SERVER_STARTED.register {
+            context = ServerContext.get(it)
+        }
+
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CCVSConfig.SPEC, "${CCVSMod.MOD_ID}-config.toml")
 
         init()
@@ -35,6 +36,8 @@ class CCVSModForge {
     }
 
     companion object {
+        lateinit var context: ServerContext
+
         fun getModBus(): IEventBus = MOD_BUS
     }
 }
