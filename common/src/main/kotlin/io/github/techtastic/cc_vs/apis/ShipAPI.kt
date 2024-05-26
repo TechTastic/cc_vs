@@ -6,6 +6,7 @@ import io.github.techtastic.cc_vs.util.CCVSUtils.momentToTable
 import io.github.techtastic.cc_vs.util.CCVSUtils.quatToTable
 import io.github.techtastic.cc_vs.util.CCVSUtils.vectorToTable
 import org.joml.Vector4d
+import org.joml.Vector3d
 import org.joml.primitives.AABBi
 import org.valkyrienskies.core.api.ships.ServerShip
 import kotlin.math.asin
@@ -27,6 +28,9 @@ open class ShipAPI(val ship: ServerShip) : ILuaAPI {
 
     @LuaFunction
     fun getMass(): Double = this.ship.inertiaData.mass
+
+    @LuaFunction
+    fun getMomentOfInertiaTensorToSave(): List<List<Double>> = momentToTable(this.ship.inertiaData.momentOfInertiaTensorToSave)
 
     @LuaFunction
     fun getMomentOfInertiaTensor(): List<List<Double>> = momentToTable(this.ship.inertiaData.momentOfInertiaTensor)
@@ -77,6 +81,9 @@ open class ShipAPI(val ship: ServerShip) : ILuaAPI {
 
     @LuaFunction
     fun getWorldspacePosition(): Map<String, Double> = vectorToTable(this.ship.transform.positionInWorld)
+
+    @LuaFunction
+    fun positionToWorld(x: Double, y: Double, z: Double): Map<String, Double> = vectorToTable(this.ship.shipToWorld.transformPosition(Vector3d(x, y, z)))
 
     @LuaFunction
     fun isStatic(): Boolean = this.ship.isStatic
