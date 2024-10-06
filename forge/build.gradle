@@ -59,7 +59,7 @@ dependencies {
 
     implementation "thedarkcolour:kotlinforforge:$forge_kotlin_version"
 
-    modImplementation("curse.maven:cc-tweaked-282001:5005529")
+    modImplementation("curse.maven:cc-tweaked-282001:5714507")
 }
 
 processResources {
