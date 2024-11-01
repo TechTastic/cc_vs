@@ -1,5 +1,7 @@
 package io.github.techtastic.cc_vs.util
 
+import dan200.computercraft.api.lua.ILuaAPI
+import dan200.computercraft.core.apis.IAPIEnvironment
 import dan200.computercraft.shared.computer.core.ComputerFamily
 import dan200.computercraft.shared.computer.core.ServerComputer
 import io.github.techtastic.cc_vs.CCVSMod
@@ -20,10 +22,26 @@ object CCVSUtils {
         if (ship == null)
             return
 
+        // Get the 'Computer' instance from 'computer' (which is an instance of ServerComputer)
+        val trueComputer = computer::class.java
+            .getDeclaredField("computer")
+            .apply { isAccessible = true }
+            .get(computer)
+
+        val computerClass = trueComputer::class.java
+        val apiEnvironment = computerClass
+            .getDeclaredMethod("getAPIEnvironment")
+            .apply { isAccessible = true }
+            .invoke(trueComputer) as IAPIEnvironment
+
+        val addApiMethod = computerClass
+            .getDeclaredMethod("addApi", ILuaAPI::class.java)
+            .apply { isAccessible = true }
+
         if (!PlatformUtils.isCommandOnly() || computer.family == ComputerFamily.COMMAND)
-            computer.addAPI(ExtendedShipAPI(computer.apiEnvironment, ship, level))
+            addApiMethod.invoke(trueComputer, ExtendedShipAPI(apiEnvironment, ship, level))
         else
-            computer.addAPI(ShipAPI(ship))
+            addApiMethod.invoke(trueComputer, ShipAPI(ship))
     }
 
     fun vectorToTable(vec: Vector3dc): Map<String, Double> = mapOf(

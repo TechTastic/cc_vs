@@ -2,9 +2,11 @@ package io.github.techtastic.cc_vs.apis
 
 import dan200.computercraft.api.lua.ILuaAPI
 import dan200.computercraft.api.lua.LuaFunction
+import io.github.techtastic.cc_vs.util.CCVSUtils.momentToTable
+import io.github.techtastic.cc_vs.util.CCVSUtils.quatToTable
+import org.joml.Vector4d
 import org.joml.Vector3d
 import org.joml.Vector3dc
-import org.joml.Vector4d
 import org.joml.primitives.AABBi
 import org.valkyrienskies.core.api.ships.ServerShip
 import kotlin.math.asin
@@ -28,16 +30,10 @@ open class ShipAPI(val ship: ServerShip) : ILuaAPI {
     fun getMass(): Double = this.ship.inertiaData.mass
 
     @LuaFunction
-    fun getMomentOfInertiaTensor(): List<List<Double>> {
-        val tensor: MutableList<List<Double>> = mutableListOf()
+    fun getMomentOfInertiaTensorToSave(): List<List<Double>> = momentToTable(this.ship.inertiaData.momentOfInertiaTensorToSave)
 
-        for (i in 0..2) {
-            val row = this.ship.inertiaData.momentOfInertiaTensor.getRow(i, Vector3d())
-            tensor.add(i, listOf(row.x, row.y, row.z))
-        }
-
-        return tensor
-    }
+    @LuaFunction
+    fun getMomentOfInertiaTensor(): List<List<Double>> = momentToTable(this.ship.inertiaData.momentOfInertiaTensor)
 
     @LuaFunction
     fun getName(): String = this.ship.slug ?: "no-name"
@@ -46,15 +42,7 @@ open class ShipAPI(val ship: ServerShip) : ILuaAPI {
     fun getOmega(): Map<String, Double> = vectorToTable(this.ship.omega)
 
     @LuaFunction
-    fun getQuaternion(): Map<String, Double> {
-        val q = this.ship.transform.shipToWorldRotation
-        return mapOf(
-                Pair("x", q.x()),
-                Pair("y", q.y()),
-                Pair("z", q.z()),
-                Pair("w", q.w())
-        )
-    }
+    fun getQuaternion(): Map<String, Double> = quatToTable(this.ship.transform.shipToWorldRotation)
 
     @LuaFunction
     fun getRoll(): Double {
@@ -93,6 +81,9 @@ open class ShipAPI(val ship: ServerShip) : ILuaAPI {
 
     @LuaFunction
     fun getWorldspacePosition(): Map<String, Double> = vectorToTable(this.ship.transform.positionInWorld)
+
+    @LuaFunction
+    fun positionToWorld(x: Double, y: Double, z: Double): Map<String, Double> = vectorToTable(this.ship.shipToWorld.transformPosition(Vector3d(x, y, z)))
 
     @LuaFunction
     fun isStatic(): Boolean = this.ship.isStatic
