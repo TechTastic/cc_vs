@@ -17,7 +17,7 @@ import org.valkyrienskies.core.impl.game.ShipTeleportDataImpl
 import org.valkyrienskies.mod.common.shipObjectWorld
 import org.valkyrienskies.mod.common.vsCore
 
-class ExtendedShipAPI(private val api: IAPIEnvironment, ship: ServerShip, private val level: ServerLevel) : ShipAPI(ship) {
+class ExtendedShipAPI(private val api: IAPIEnvironment, ship: ServerShip, level: ServerLevel) : ShipAPI(ship, level) {
     var control: QueuedForcesApplier = QueuedForcesApplier.getOrCreateControl(this.ship)
 
     init {

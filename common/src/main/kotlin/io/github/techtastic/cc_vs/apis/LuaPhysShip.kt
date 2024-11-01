@@ -1,9 +1,7 @@
 package io.github.techtastic.cc_vs.apis
 
 import dan200.computercraft.api.lua.LuaFunction
-import io.github.techtastic.cc_vs.util.CCVSUtils.momentToTable
-import io.github.techtastic.cc_vs.util.CCVSUtils.quatToTable
-import io.github.techtastic.cc_vs.util.CCVSUtils.vectorToTable
+import io.github.techtastic.cc_vs.util.CCVSUtils.toLua
 import org.valkyrienskies.core.impl.game.ships.PhysShipImpl
 
 class LuaPhysShip(private val physShip: PhysShipImpl) {
@@ -21,7 +19,7 @@ class LuaPhysShip(private val physShip: PhysShipImpl) {
     fun getInertia(): Map<String, Any> {
         val inertia = this.physShip.inertia
         return mapOf(
-            Pair("momentOfInertiaTensor", momentToTable(inertia.momentOfInertiaTensor)),
+            Pair("momentOfInertiaTensor", inertia.momentOfInertiaTensor.toLua()),
             Pair("mass", inertia.shipMass)
         )
     }
@@ -30,10 +28,10 @@ class LuaPhysShip(private val physShip: PhysShipImpl) {
     fun getPoseVel(): Map<String, Map<String, Double>> {
         val poseVel = this.physShip.poseVel
         return mapOf(
-            Pair("vel", vectorToTable(poseVel.vel)),
-            Pair("omega", vectorToTable(poseVel.omega)),
-            Pair("pos", vectorToTable(poseVel.pos)),
-            Pair("rot", quatToTable(poseVel.rot))
+            Pair("vel", poseVel.vel.toLua()),
+            Pair("omega", poseVel.omega.toLua()),
+            Pair("pos", poseVel.pos.toLua()),
+            Pair("rot", poseVel.rot.toLua())
         )
     }
 
