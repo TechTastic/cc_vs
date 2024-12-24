@@ -86,36 +86,40 @@ components.java {
     }
 }
 
+/*
 curseforge {
-    apiKey = System.getenv("CURSEFORGE_TOKEN")
+    apiKey = project.curse_api_key
     project {
-        id = '958065'
+        id = project.curse_project_id
         releaseType = 'release'
-        addGameVersion '1.18.2'
+        addGameVersion project.minecraft_version
         relations {
             requiredDependency 'valkyrien-skies'
-            requiredDependency 'cc-restitched'
+            requiredDependency 'cc-tweaked'
+            requiredDependency 'kotlin-for-forge'
         }
 
         mainArtifact(remapJar) {
-            displayName = 'CC: VS ' + project.minecraft_version + ' Fabric ' + project.mod_version
+            displayName = 'CC: VS ' + project.minecraft_version + ' Forge ' + project.mod_version
         }
     }
 }
 
 modrinth {
-    token = System.getenv("MODRINTH_TOKEN")
+    token = project.modrinth_api_key
     projectId = 'cc-vs'
     versionNumber = project.mod_version
     versionType = "release"
     uploadFile = remapJar
-    gameVersions = ["1.18.2"]
-    loaders = ["fabric"]
+    gameVersions = [project.minecraft_version]
+    loaders = ["forge"]
     dependencies {
         required.project "valkyrien-skies"
-        required.project "cc-restitched"
+        required.project "cc-tweaked"
+        required.project "kotlin-for-forge"
     }
 }
+*/
 
 publishing {
     publications {
