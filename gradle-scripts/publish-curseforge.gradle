@@ -33,10 +33,10 @@ modrinth {
     versionType = "release"
     versionName = 'CC: VS ' + project.minecraft_version + '-' + project.loader_platform.toLowerCase() + '-' + project.mod_version
     versionNumber = project.mod_version
-    uploadFile = remapJar
+    uploadFile = remapJar.archiveFile.get().asFile
     gameVersions = [project.minecraft_version]
     loaders = [project.loader_platform.toLowerCase()]
-    syncBodyFrom = rootProject.file("changelog.md").text
+    changelog = rootProject.file("changelog.md").text
 
     dependencies {
         required.project "valkyrien-skies"
