@@ -13,8 +13,12 @@ curseforge {
             mainArtifact(remapJar.archiveFile.get().asFile) {
                 relations {
                     requiredDependency 'valkyrien-skies'
-                    requiredDependency 'cc-tweaked'
-                    requiredDependency 'kotlin-for-forge'
+                    if (project.loader_platform == "Forge") {
+                        requiredDependency 'kotlin-for-forge'
+                        requiredDependency 'cc-tweaked'
+                    }
+                    if (project.loader_platform == "Fabric")
+                        requiredDependency 'cc-restitched'
                 }
                 displayName = 'CC: VS ' + project.minecraft_version + ' ' + project.loader_platform + ' ' + project.mod_version
             }
@@ -40,7 +44,11 @@ modrinth {
 
     dependencies {
         required.project "valkyrien-skies"
-        required.project "cc-tweaked"
-        required.project "kotlin-for-forge"
+        if (project.loader_platform == "Forge") {
+            required.project "cc-tweaked"
+            required.project "kotlin-for-forge"
+        }
+        if (project.loader_platform == "Fabric")
+            required.project "cc-restitched"
     }
 }
