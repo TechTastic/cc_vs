@@ -5,6 +5,8 @@ curseforge {
         project {
             id = project.curse_project_id
             releaseType = 'release'
+            changelogType = 'markdown'
+            changelog = rootProject.file("changelog.md").text
             addGameVersion project.minecraft_version
             addGameVersion project.loader_platform
 
@@ -34,6 +36,7 @@ modrinth {
     uploadFile = remapJar
     gameVersions = [project.minecraft_version]
     loaders = [project.loader_platform.toLowerCase()]
+    syncBodyFrom = rootProject.file("changelog.md").text
 
     dependencies {
         required.project "valkyrien-skies"

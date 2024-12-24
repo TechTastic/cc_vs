@@ -86,41 +86,6 @@ components.java {
     }
 }
 
-/*
-curseforge {
-    apiKey = project.curse_api_key
-    project {
-        id = project.curse_project_id
-        releaseType = 'release'
-        addGameVersion project.minecraft_version
-        relations {
-            requiredDependency 'valkyrien-skies'
-            requiredDependency 'cc-tweaked'
-            requiredDependency 'kotlin-for-forge'
-        }
-
-        mainArtifact(remapJar) {
-            displayName = 'CC: VS ' + project.minecraft_version + ' Forge ' + project.mod_version
-        }
-    }
-}
-
-modrinth {
-    token = project.modrinth_api_key
-    projectId = 'cc-vs'
-    versionNumber = project.mod_version
-    versionType = "release"
-    uploadFile = remapJar
-    gameVersions = [project.minecraft_version]
-    loaders = ["forge"]
-    dependencies {
-        required.project "valkyrien-skies"
-        required.project "cc-tweaked"
-        required.project "kotlin-for-forge"
-    }
-}
-*/
-
 publishing {
     publications {
         mavenCommon(MavenPublication) {
