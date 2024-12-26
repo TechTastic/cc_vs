@@ -30,6 +30,13 @@ side = "BOTH"
 [[dependencies.cc_vs]]
 modId = "valkyrienskies"
 mandatory = true
-versionRange = "[${vs2_version},)"
+versionRange = "[${vs2_version},2.3.0-beta.5)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.cc_vs]]
+modId = "computercraft"
+mandatory = true
+versionRange = "[1.101.3,)"
 ordering = "AFTER"
 side = "BOTH"
