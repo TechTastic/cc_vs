@@ -56,16 +56,20 @@ open class ShipAPI(val ship: ServerShip, val level: ServerLevel) : ILuaAPI {
         this.ship.transform.shipToWorldRotation.toLua()
 
     @LuaFunction
-    fun getRoll(): Double =
-        this.ship.transform.shipToWorldRotation.getEulerAnglesZYX(Vector3d()).x
+    fun getEulerAnglesXYZ() =
+        this.ship.transform.shipToWorldRotation.getEulerAnglesXYZ(Vector3d()).toLua()
 
     @LuaFunction
-    fun getYaw(): Double =
-        this.ship.transform.shipToWorldRotation.getEulerAnglesZXY(Vector3d()).y
+    fun getEulerAnglesYXZ() =
+        this.ship.transform.shipToWorldRotation.getEulerAnglesYXZ(Vector3d()).toLua()
 
     @LuaFunction
-    fun getPitch(): Double =
-        this.ship.transform.shipToWorldRotation.getEulerAnglesYXZ(Vector3d()).z
+    fun getEulerAnglesZXY() =
+        this.ship.transform.shipToWorldRotation.getEulerAnglesZXY(Vector3d()).toLua()
+
+    @LuaFunction
+    fun getEulerAnglesZYX() =
+        this.ship.transform.shipToWorldRotation.getEulerAnglesZYX(Vector3d()).toLua()
 
     @LuaFunction
     fun getScale(): Map<String, Double> =

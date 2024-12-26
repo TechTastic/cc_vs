@@ -33,3 +33,10 @@ mandatory = true
 versionRange = "[${vs2_version},)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.cc_vs]]
+modId = "computercraft"
+mandatory = true
+versionRange = "[1.112.0,)"
+ordering = "AFTER"
+side = "BOTH"
