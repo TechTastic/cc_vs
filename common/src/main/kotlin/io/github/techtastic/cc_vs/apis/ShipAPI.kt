@@ -37,10 +37,6 @@ open class ShipAPI(val ship: ServerShip, val level: ServerLevel) : ILuaAPI {
         this.ship.inertiaData.mass
 
     @LuaFunction
-    fun getMomentOfInertiaTensorToSave(): List<List<Double>> =
-        this.ship.inertiaData.momentOfInertiaTensorToSave.toLua()
-
-    @LuaFunction
     fun getMomentOfInertiaTensor(): List<List<Double>> =
         this.ship.inertiaData.momentOfInertiaTensor.toLua()
 

@@ -16,24 +16,25 @@ class LuaPhysShip(private val physShip: PhysShipImpl) {
     fun doFluidDrag() = this.physShip.doFluidDrag
 
     @LuaFunction
-    fun getInertia(): Map<String, Any> {
-        val inertia = this.physShip.inertia
-        return mapOf(
-            Pair("momentOfInertiaTensor", inertia.momentOfInertiaTensor.toLua()),
-            Pair("mass", inertia.shipMass)
-        )
-    }
+    fun getMass() = this.physShip.mass
 
     @LuaFunction
-    fun getPoseVel(): Map<String, Map<String, Double>> {
-        val poseVel = this.physShip.poseVel
-        return mapOf(
-            Pair("vel", poseVel.vel.toLua()),
-            Pair("omega", poseVel.omega.toLua()),
-            Pair("pos", poseVel.pos.toLua()),
-            Pair("rot", poseVel.rot.toLua())
-        )
-    }
+    fun getMomentOfInertia() = this.physShip.momentOfInertia.toLua()
+
+    @LuaFunction
+    fun getVelocity() = this.physShip.velocity.toLua()
+
+    @LuaFunction
+    fun getOmega() = this.physShip.omega.toLua()
+
+    @LuaFunction
+    fun getRotation() = this.physShip.transform.shipToWorldRotation
+
+    @LuaFunction
+    fun getCenterOfMassInWorldspace() = this.physShip.transform.positionInWorld
+
+    @LuaFunction
+    fun getCenterOfMassInShipyard() = this.physShip.transform.positionInShip
 
     @LuaFunction
     fun getForcesInducers(): List<String> {
