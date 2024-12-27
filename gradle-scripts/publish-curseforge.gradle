@@ -4,7 +4,7 @@ curseforge {
         apiKey = project.curse_api_key
         project {
             id = project.curse_project_id
-            releaseType = 'release'
+            releaseType = 'alpha'
             changelogType = 'markdown'
             changelog = rootProject.file("changelog.md").text
             addGameVersion project.minecraft_version
@@ -34,7 +34,7 @@ curseforge {
 modrinth {
     token = project.modrinth_api_key
     projectId = project.modrinth_project_id
-    versionType = "release"
+    versionType = "alpha"
     versionName = 'CC: VS ' + project.minecraft_version + '-' + project.loader_platform.toLowerCase() + '-' + project.mod_version
     versionNumber = project.mod_version
     uploadFile = remapJar.archiveFile.get().asFile
