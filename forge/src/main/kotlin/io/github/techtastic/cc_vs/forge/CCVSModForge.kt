@@ -11,6 +11,7 @@ import net.minecraftforge.fml.ModLoadingContext
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.config.ModConfig
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
 
 @Mod(CCVSMod.MOD_ID)
@@ -22,13 +23,17 @@ class CCVSModForge {
             )
         }
 
+        MOD_BUS.addListener { event: FMLCommonSetupEvent ->
+            event.enqueueWork { init() }
+        }
+
         LifecycleEvent.SERVER_STARTED.register {
             context = ServerContext.get(it)
         }
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CCVSConfig.SPEC, "${CCVSMod.MOD_ID}-config.toml")
 
-        init()
+        //init()
     }
 
     private fun clientSetup(event: FMLClientSetupEvent?) {

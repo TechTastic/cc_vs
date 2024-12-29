@@ -5,19 +5,16 @@ import dan200.computercraft.api.lua.LuaFunction
 import io.github.techtastic.cc_vs.mixin.ShipObjectWorldAccessor
 import io.github.techtastic.cc_vs.util.CCVSUtils.toLua
 import net.minecraft.server.level.ServerLevel
-import net.minecraft.world.phys.Vec3
 import org.joml.Vector3d
 import org.joml.Vector4d
 import org.joml.primitives.AABBi
 import org.valkyrienskies.core.api.ships.ServerShip
-import org.valkyrienskies.core.apigame.constraints.VSAttachmentConstraint
-import org.valkyrienskies.core.apigame.constraints.VSConstraintAndId
+import org.valkyrienskies.core.apigame.joints.VSJointAndId
+import org.valkyrienskies.mod.api.VsApi
+import org.valkyrienskies.mod.api.positionToWorld
 import org.valkyrienskies.mod.common.shipObjectWorld
-import org.valkyrienskies.mod.common.util.toJOML
-import kotlin.math.asin
-import kotlin.math.atan2
 
-open class ShipAPI(val ship: ServerShip, val level: ServerLevel) : ILuaAPI {
+open class ShipAPI(open val ship: ServerShip, val level: ServerLevel) : ILuaAPI {
     var names: ArrayList<String> = arrayListOf("ship", this.ship.slug ?: "ship")
 
     override fun getNames(): Array<String> = names.toTypedArray()
@@ -38,14 +35,14 @@ open class ShipAPI(val ship: ServerShip, val level: ServerLevel) : ILuaAPI {
 
     @LuaFunction
     fun getMomentOfInertiaTensor(): List<List<Double>> =
-        this.ship.inertiaData.momentOfInertiaTensor.toLua()
+        this.ship.inertiaData.inertiaTensor.toLua()
 
     @LuaFunction
     fun getName(): String = this.ship.slug ?: "no-name"
 
     @LuaFunction
-    fun getOmega(): Map<String, Double> =
-        this.ship.omega.toLua()
+    fun getAngularVelocity(): Map<String, Double> =
+        this.ship.angularVelocity.toLua()
 
     @LuaFunction
     fun getQuaternion(): Map<String, Double> =
@@ -95,7 +92,7 @@ open class ShipAPI(val ship: ServerShip, val level: ServerLevel) : ILuaAPI {
 
     @LuaFunction
     fun transformPositionToWorld(x: Double, y: Double, z: Double): Map<String, Double> =
-        this.ship.shipToWorld.transformPosition(Vector3d(x, y, z)).toLua()
+        this.ship.positionToWorld(Vector3d(x, y, z)).toLua()
 
     @LuaFunction
     fun isStatic(): Boolean = this.ship.isStatic
@@ -119,10 +116,9 @@ open class ShipAPI(val ship: ServerShip, val level: ServerLevel) : ILuaAPI {
     }
 
     @LuaFunction
-    fun getConstraints(): List<*> {
+    fun getJoints(): List<*> {
         val accessor = level.shipObjectWorld as ShipObjectWorldAccessor
-        return accessor.shipIdToConstraints.getOrDefault(ship.id, setOf()).map { id ->
-            accessor.constraints[id]?.let { VSConstraintAndId(id, it) }
-        }.map { combo -> combo?.toLua() }
+        return accessor.shipIdToJoints.getOrDefault(ship.id, setOf()).map { id ->
+            accessor.joints[id]?.let { VSJointAndId(id, it).toLua() } }
     }
 }

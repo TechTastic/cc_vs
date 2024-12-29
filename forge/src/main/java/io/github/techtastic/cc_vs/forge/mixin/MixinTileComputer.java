@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.valkyrienskies.core.api.ships.ServerShip;
-import org.valkyrienskies.mod.common.VSGameUtilsKt;
+import org.valkyrienskies.core.api.ships.Ship;
+import org.valkyrienskies.mod.api.ValkyrienSkies;
 
 @Mixin(TileComputer.class)
 public class MixinTileComputer {
@@ -23,7 +23,7 @@ public class MixinTileComputer {
         ServerComputer computer = cir.getReturnValue();
         ServerLevel level = computer.getLevel();
         BlockPos pos = computer.getPosition();
-        ServerShip ship = VSGameUtilsKt.getShipObjectManagingPos(level, pos);
+        Ship ship = ValkyrienSkies.getShipManagingBlock(level, pos);
 
         CCVSUtils.INSTANCE.applyShipAPIsToComputer(computer, level, ship);
     }

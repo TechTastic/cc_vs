@@ -12,12 +12,13 @@ import org.joml.Quaterniond
 import org.joml.Quaterniondc
 import org.joml.Vector3d
 import org.joml.Vector3dc
+import org.valkyrienskies.core.api.ships.LoadedServerShip
 import org.valkyrienskies.core.api.ships.ServerShip
 import org.valkyrienskies.core.impl.game.ShipTeleportDataImpl
 import org.valkyrienskies.mod.common.shipObjectWorld
 import org.valkyrienskies.mod.common.vsCore
 
-class ExtendedShipAPI(private val api: IAPIEnvironment, ship: ServerShip, level: ServerLevel) : ShipAPI(ship, level) {
+class ExtendedShipAPI(api: IAPIEnvironment, override val ship: LoadedServerShip, level: ServerLevel) : ShipAPI(ship, level) {
     var control: QueuedForcesApplier = QueuedForcesApplier.getOrCreateControl(this.ship)
 
     init {
@@ -84,9 +85,9 @@ class ExtendedShipAPI(private val api: IAPIEnvironment, ship: ServerShip, level:
         if (input.containsKey("vel"))
             vel = getVectorFromTable(input, "vel")
 
-        var omega = this.ship.omega
-        if (input.containsKey("omega"))
-            omega = getVectorFromTable(input, "omega")
+        var omega = this.ship.angularVelocity
+        if (input.containsKey("angularVelocity"))
+            omega = getVectorFromTable(input, "angularVelocity")
 
         var dimension: String? = null
         if (input.containsKey("dimension"))

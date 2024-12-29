@@ -1,9 +1,7 @@
 package io.github.techtastic.cc_vs.ship
 
 import org.joml.Vector3dc
-import org.valkyrienskies.core.api.ships.PhysShip
-import org.valkyrienskies.core.api.ships.ServerShip
-import org.valkyrienskies.core.api.ships.ShipForcesInducer
+import org.valkyrienskies.core.api.ships.*
 import org.valkyrienskies.core.util.pollUntilEmpty
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -72,14 +70,13 @@ class QueuedForcesApplier: ShipForcesInducer {
     }
 
     companion object {
-        fun getOrCreateControl(ship: ServerShip): QueuedForcesApplier {
+        fun getOrCreateControl(ship: LoadedServerShip): QueuedForcesApplier {
             var control = ship.getAttachment(QueuedForcesApplier::class.java)
             if (control == null) {
-                control = QueuedForcesApplier()
-                ship.saveAttachment(QueuedForcesApplier::class.java, control)
+                control = ship.setAttachment(control)
             }
 
-            return control
+            return control!!
         }
     }
 

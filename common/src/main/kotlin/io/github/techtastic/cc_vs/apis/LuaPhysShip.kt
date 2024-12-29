@@ -2,16 +2,19 @@ package io.github.techtastic.cc_vs.apis
 
 import dan200.computercraft.api.lua.LuaFunction
 import io.github.techtastic.cc_vs.util.CCVSUtils.toLua
+import org.valkyrienskies.core.api.VsBeta
 import org.valkyrienskies.core.impl.game.ships.PhysShipImpl
 
 class LuaPhysShip(private val physShip: PhysShipImpl) {
 
+    @OptIn(VsBeta::class)
     @LuaFunction
     fun getBuoyantFactor() = this.physShip.buoyantFactor
 
     @LuaFunction
     fun isStatic() = this.physShip.isStatic
 
+    @OptIn(VsBeta::class)
     @LuaFunction
     fun doFluidDrag() = this.physShip.doFluidDrag
 
@@ -25,7 +28,7 @@ class LuaPhysShip(private val physShip: PhysShipImpl) {
     fun getVelocity() = this.physShip.velocity.toLua()
 
     @LuaFunction
-    fun getOmega() = this.physShip.omega.toLua()
+    fun getAngularVelocity() = this.physShip.angularVelocity.toLua()
 
     @LuaFunction
     fun getRotation() = this.physShip.transform.shipToWorldRotation

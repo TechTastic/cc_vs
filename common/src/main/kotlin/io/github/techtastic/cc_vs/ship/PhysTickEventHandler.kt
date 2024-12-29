@@ -28,14 +28,13 @@ class PhysTickEventHandler: ShipForcesInducer {
     }
 
     companion object {
-        fun getOrCreateControl(ship: ServerShip): PhysTickEventHandler {
+        fun getOrCreateControl(ship: LoadedServerShip): PhysTickEventHandler {
             var control = ship.getAttachment(PhysTickEventHandler::class.java)
             if (control == null) {
-                control = PhysTickEventHandler()
-                ship.saveAttachment(PhysTickEventHandler::class.java, control)
+                control = ship.setAttachment(PhysTickEventHandler())
             }
 
-            return control
+            return control!!
         }
     }
 }
